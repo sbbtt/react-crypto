@@ -26,7 +26,6 @@ function Chart() {
   console.log('coinid:: ',coinId)
   const isDark = useRecoilValue(isDarkAtom);
    const {isLoading, data} = useQuery<Idata[]>(['ohlcv', coinId], ()=>fetchCoinHistory(coinId))
-   console.log('data값: ',data)
   return (
     <div>
       {isLoading ? "loading chart.." : <ApexChart type="line" 
@@ -42,15 +41,32 @@ function Chart() {
           mode:'dark'
         },
         chart:{
-            height: 500,
+            height: 300,
             width: 500,
-            background: 'transparent'
+            background: 'transparent',
+            toolbar: {
+              show: false
+            }
         },
+        grid: {show: false},
+        yaxis: {show: false},
+        xaxis: {labels: {show: false}, 
+        axisTicks:{show:false},
+        type: 'datetime',
+        categories: data?.map((x)=>
+        new Date(+x.time_close * 1000).toISOString()
+        ) 
+      },
         stroke:{
           // width: 1
         },
         // fill: {type: 'gradient', gradient:{gradientToColors:['blue'], stops:[0, 1]}},
         // colors:['red']
+        tooltip:{
+          y: {
+            formatter: (val)=> `$ ${val.toFixed(2)}`
+          }
+        }
 
       }} 
       />
