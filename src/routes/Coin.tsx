@@ -71,7 +71,20 @@ const Img = styled.img`
     height: 35px;
     margin-right: 10px;
 `
-   
+const Btn = styled.button`
+  display: flex;
+  margin: 20px;
+  justify-content: right;
+  color: ${(props) => props.theme.textColor};
+  font-size: 28px;
+  .list {
+    margin: 0 0 -3px;
+  }
+  &:hover {
+    transition: 0.3s linear;
+    color: ${(props) => props.theme.accentColor};
+  }
+`;
 
 const Header = styled.header`
     height: 10vh;
@@ -160,67 +173,72 @@ function Coin(){
       useQuery<IPriceData>(["tickers", coinId], () => fetchCoinTickers(coinId), {
         refetchInterval: 5000
       });
-    const loading = infoLoading ||  tickersLoading
-    return <Container>
-    <Header>
-      <Helmet>
-        <title>
-          {state?.name ? state.name : loading ? "Loading..." : infoData?.name} 
-          {` $${tickersData?.quotes.USD.price.toFixed(2)}`}
-        </title>
-      </Helmet>
-      <Title>
-        {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
-      </Title>
-    </Header>
-    {loading ? 
-    <Loader>
-    Loading...
-    </Loader> : 
-    (
-        <>
-          <Overview>
-            <OverviewItem>
-              <span>Rank:</span>
-              <span>{infoData?.rank}</span>
-            </OverviewItem>
-            <OverviewItem>
-              <span>Symbol:</span>
-              <span>${infoData?.symbol}</span>
-            </OverviewItem>
-            <OverviewItem>
-              <span>Price:</span>
-              <span>{tickersData?.quotes.USD.price.toFixed(2)}</span>
-            </OverviewItem>
-          </Overview>
-          <Description>{infoData?.description}</Description>
-          <Overview>
-            <OverviewItem>
-              <span>Total Suply:</span>
-              <span>{tickersData?.total_supply}</span>
-            </OverviewItem>
-            <OverviewItem>
-              <span>Max Supply:</span>
-              <span>{tickersData?.max_supply}</span>
-            </OverviewItem>
-          </Overview>
+      const loading = infoLoading ||  tickersLoading
+      return (
+        <Container>
+        <Btn style={{ display: "abso" }}>
+        <Link to={"/"}>GO HOME</Link></Btn>
+        <Header>
+          <Helmet>
+            <title>
+              {state?.name
+                ? state.name
+                : loading
+                ? "Loading..."
+                : infoData?.name}
+              {` $${tickersData?.quotes.USD.price.toFixed(2)}`}
+            </title>
+          </Helmet>
+          <Title>
+            {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
+          </Title>
+        </Header>
+        {loading ? (
+          <Loader>Loading...</Loader>
+        ) : (
+          <>
+            <Overview>
+              <OverviewItem>
+                <span>Rank:</span>
+                <span>{infoData?.rank}</span>
+              </OverviewItem>
+              <OverviewItem>
+                <span>Symbol:</span>
+                <span>${infoData?.symbol}</span>
+              </OverviewItem>
+              <OverviewItem>
+                <span>Price:</span>
+                <span>{tickersData?.quotes.USD.price.toFixed(2)}</span>
+              </OverviewItem>
+            </Overview>
+            <Description>{infoData?.description}</Description>
+            <Overview>
+              <OverviewItem>
+                <span>Total Suply:</span>
+                <span>{tickersData?.total_supply}</span>
+              </OverviewItem>
+              <OverviewItem>
+                <span>Max Supply:</span>
+                <span>{tickersData?.max_supply}</span>
+              </OverviewItem>
+            </Overview>
 
-          <Tabs>
-            <Tab isActive={chartMatch !== null}>
-              <Link to={`/${coinId}/chart`}>Chart</Link>
-            </Tab>
-            <Tab isActive={priceMatch !== null}>
-              <Link to={`/${coinId}/price`}>Price</Link>
-            </Tab>
-          </Tabs>
+            <Tabs>
+              <Tab isActive={chartMatch !== null}>
+                <Link to={`/${coinId}/chart`}>Chart</Link>
+              </Tab>
+              <Tab isActive={priceMatch !== null}>
+                <Link to={`/${coinId}/price`}>Price</Link>
+              </Tab>
+            </Tabs>
 
-          <Outlet context={{coinId}}/>
+            <Outlet context={{ coinId }} />
 
-          {/* <Link to={`/${coinId}/chart`} >Chart</Link>
+            {/* <Link to={`/${coinId}/chart`} >Chart</Link>
           <Link to={`/${coinId}/price`}>Price</Link> */}
-        </>
-      )
-    }
-    </Container>
+          </>
+        )}
+      </Container>
+    );
 }
 export default Coin;

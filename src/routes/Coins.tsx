@@ -56,7 +56,20 @@ const Img = styled.img`
     height: 35px;
     margin-right: 10px;
 `
-    
+const Btn = styled.button`
+      display: flex;
+    margin: 20px;
+    justify-content: right;
+    color: ${props => props.theme.textColor};
+    font-size: 28px;
+    .list{
+        margin: 0 0 -3px;
+    }
+    &:hover{
+        transition: .3s linear;
+        color: ${props => props.theme.accentColor}
+    }
+`    
 interface ICoin {
   id: string;
   name: string;
@@ -84,12 +97,12 @@ function Coins(){
       <Container>
         <Helmet>
         <title>
-          코인
+          Coin List
         </title>
       </Helmet>
+          <Btn onClick={toggleDarkAtom}>W/B MODE</Btn>
         <Header>
-          <Title>코인</Title>
-          <button onClick={toggleDarkAtom}>Toggle Mode</button>
+          <Title>Coin List</Title>
         </Header>
         {isLoading ? 
         <Loader>
