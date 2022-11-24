@@ -25,7 +25,7 @@ function Chart() {
   const {coinId} =useOutletContext<ChartProps>(); // {food: "pizza"}
   console.log('coinid:: ',coinId)
   const isDark = useRecoilValue(isDarkAtom);
-   const {isLoading, data} = useQuery<Idata[]>(['ohlcv', coinId], ()=>fetchCoinHistory(coinId))
+   const {isLoading, data} = useQuery<Idata[]>(['ohlcv', coinId], ()=>fetchCoinHistory(coinId),{refetchInterval: 10000})
   return (
     <div>
       {isLoading ? "loading chart.." : <ApexChart type="line" 
