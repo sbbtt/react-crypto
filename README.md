@@ -1,46 +1,46 @@
-# Getting Started with Create React App
+# 암호화폐 시세 조회
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### 배포 URL : https://crypto-currency-rho.vercel.app/
 
-## Available Scripts
+코인시세 오픈 API를 사용해 암호화폐의 시세정보를 제공합니다.
 
-In the project directory, you can run:
+## 1. Preview
 
-### `npm start`
+---
+### 메인 화면
+<img width="664" alt="image" src="https://user-images.githubusercontent.com/54101187/209608756-c5512f63-09ad-4f0f-b248-ebeea3544233.png">
+<br/>
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### 다크모드 라이트모드 적용
+<img width="488" alt="image" src="https://user-images.githubusercontent.com/54101187/209608881-aa0aabcb-ffdf-4b7c-bea0-1346a2b578ca.png">
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- 전역상태 관리 라이브러리 Recoil을 사용하여 다크모드, 라이트모드 상태을 만들었습니다.
+- 다크모드, 라이트모드의 색상은 theme.ts, styled.d.ts 파일로 관리했습니다.
 
-### `npm test`
+### 코인 시세 차트
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- ApexChart 라이브러리를 사용하여 차트 데이터를 구현했습니다.
+- Chart 내 옵션 프로퍼티를 사용하여 다크모드와 라이트모드로 변경되게 구현했습니다.
+- 데이터가 업데이트 반영을 위해 가격 데이터는 refetchInterval 5000ms로 데이터를 받아오게 했습니다.
 
-### `npm run build`
+<img width="491" alt="image" src="https://user-images.githubusercontent.com/54101187/209608855-e8ce1202-6979-46ac-88f3-83cd26a953fd.png">
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 2. 사용기술 라이브러리
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- React
+- TypeScript
+- Styled-Component
+- Recoil
+- React Query
+- Apexcharts
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 3. 개발일정
 
-### `npm run eject`
+기간 : 2022.09.11 ~ 2022. 09. 22 (12일)  
+2022.12.26 ~ 2022.12.27 (2일) 스타일링 및 기능추가 후 배포 
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## 4. 개발 중 어려웠던 점
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+- 리액트 쿼리를 이용하여 오픈 api로부터 취득한 데이터를 map으로 뿌려주기 위하여 api response에 맞게 interface를 만들며 타입이 다를 경우 호환시키는 과정이 다소 어려웠습니다.  
+- 레퍼런스를 참고할때 react-router-dom 의 버전업으로 인해 라우팅 방식이 변경되었고 구글링을 한 결과 brower router, outlet을 활용하여 개별코인을 식별하는 coinId값을 전송하였습니다.  
+ <br/>
