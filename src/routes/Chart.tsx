@@ -36,7 +36,7 @@ function Chart() {
         },
       ]}
       options={{
-        theme: { mode: isDark ? "dark" : "light" },
+        theme: { mode: isDark ? "light" : "dark" },
         chart:{
             height: 300,
             width: 500,

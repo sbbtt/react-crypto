@@ -86,7 +86,7 @@ function Coins() {
         <title>Crypto Currencies</title>
       </Helmet>
       <Btn onClick={toggleDarkAtom}>
-      {isDark ? "Light Mode" : "Dark Mode"}
+      {isDark ? "Dark Mode" : "Light Mode"}
         </Btn>
       <Header>
         <Title>Crypto Currencies</Title>
