@@ -22,12 +22,11 @@ interface Idata {
 }
 
 function Chart() {
-  const {coinId} =useOutletContext<ChartProps>(); // {food: "pizza"}
-  console.log('coinid:: ',coinId)
+  const {coinId} =useOutletContext<ChartProps>(); 
   const isDark = useRecoilValue(isDarkAtom);
    const {isLoading, data} = useQuery<Idata[]>(['ohlcv', coinId], ()=>fetchCoinHistory(coinId),{refetchInterval: 10000})
   return (
-    <div>
+    <div style={{marginTop: '20px'}}>
       {isLoading ? "loading chart.." : <ApexChart type="line" 
       series={[
         {
@@ -37,19 +36,17 @@ function Chart() {
         },
       ]}
       options={{
-        theme:{
-          mode:'dark'
-        },
+        theme: { mode: isDark ? "dark" : "light" },
         chart:{
             height: 300,
             width: 500,
             background: 'transparent',
             toolbar: {
-              show: false
+              show: true
             }
         },
-        grid: {show: false},
-        yaxis: {show: false},
+        grid: {show: true},
+        yaxis: {show: true},
         xaxis: {labels: {show: false}, 
         axisTicks:{show:false},
         type: 'datetime',
@@ -57,11 +54,6 @@ function Chart() {
         new Date(+x.time_close * 1000).toISOString()
         ) 
       },
-        stroke:{
-          // width: 1
-        },
-        // fill: {type: 'gradient', gradient:{gradientToColors:['blue'], stops:[0, 1]}},
-        // colors:['red']
         tooltip:{
           y: {
             formatter: (val)=> `$ ${val.toFixed(2)}`

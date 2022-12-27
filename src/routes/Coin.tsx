@@ -7,79 +7,63 @@ import { fetchCoinInfo, fetchCoinTickers } from './api';
 import { Helmet } from 'react-helmet';
 
 const Overview = styled.div`
+  background-color: ${(props) => props.theme.textColor};
+  color: ${(props) => props.theme.bgColor};
+  padding: 20px 20px;
+  border-radius: 15px;
+  width: 100%;
   display: flex;
-  justify-content: space-between;
-  background-color: rgba(0, 0, 0, 0.5);
-  padding: 10px 20px;
-  border-radius: 10px;
-`;
-const OverviewItem = styled.div`
-  display: flex;
-  flex-direction: column;
   align-items: center;
-  width: 33%;
-  span:first-child {
-    font-size: 10px;
-    font-weight: 400;
-    text-transform: uppercase;
-    margin-bottom: 5px;
-  }
+  justify-content: space-between;
+  margin-bottom: 30px;
 `;
+
 const Description = styled.p`
   margin: 20px 0px;
 `;
 
 const Tabs = styled.div`
+  width: 100%;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  margin: 25px 0px;
+  grid-template-columns: 1fr 1fr;
   gap: 10px;
 `;
 
 const Tab = styled.span<{ isActive: boolean }>`
   text-align: center;
-  text-transform: uppercase;
-  font-size: 12px;
-  font-weight: 400;
-  background-color: rgba(0, 0, 0, 0.5);
-  border-radius: 10px;
+  font-size: 16px;
+  padding: 10px;
+  background-color: ${(props) => props.theme.textColor};
   color: ${(props) =>
-    props.isActive ? props.theme.accentColor : props.theme.textColor};
+    props.isActive ? props.theme.accentColor : props.theme.bgColor};
+  border-radius: 10px;
   a {
-    padding: 7px 0px;
     display: block;
   }
+`;
+const Container = styled.div`
+  padding: 0px 20px;
+  max-width: 480px;
+  margin: 0 auto;
 `;
 
 const Title = styled.h1`
 font-size: 48px;
   color: ${(props) => props.theme.accentColor};
 `;
-const Container = styled.div`
-padding: 0px  20px;
-max-width: 450px;
-margin: 0 auto;
-    
-`
 const Loader = styled.span`
     text-align: center;
     display: block;
 `
-
-const Img = styled.img`
-    width: 35px;
-    height: 35px;
-    margin-right: 10px;
-`
 const Btn = styled.button`
-  display: flex;
-  margin: 20px;
-  justify-content: right;
+  position: relative;
+  left: 150px;
+  border-radius: 15px;
+  padding: 5px 10px;
+  margin-top: 10px;
+  /* background-color: ${(props) => props.theme.accentColor}; */
   color: ${(props) => props.theme.textColor};
-  font-size: 28px;
-  .list {
-    margin: 0 0 -3px;
-  }
+  border: 1px solid ${(props) => props.theme.textColor};
   &:hover {
     transition: 0.3s linear;
     color: ${(props) => props.theme.accentColor};
@@ -91,6 +75,24 @@ const Header = styled.header`
     display: flex;
     justify-content: center;
     align-items: center;
+`;
+
+const OverviewItem = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+`;
+
+const ContentTitle = styled.span`
+  font-size: 12px;
+  text-align: center;
+  margin-bottom: 5px;
+`;
+
+const ContentText = styled.span`
+  font-size: 16px;
+  text-align: center;
+  line-height: 20px;
 `;
 
 interface RouteState {
@@ -106,39 +108,31 @@ interface IInfoData {
   is_new: boolean;
   is_active: boolean;
   type: string;
-  logo: string;
+  contract: string;
+  platform: string;
   description: string;
   message: string;
   open_source: boolean;
-  started_at: Date;
+  started_at: string;
   development_status: string;
   hardware_wallet: boolean;
   proof_type: string;
   org_structure: string;
   hash_algorithm: string;
-  first_data_at: Date;
-  last_data_at: Date;
+  first_data_at: string;
+  last_data_at: string;
 }
 interface IPriceData {
-  price: number;
-  volume_24h: number;
-  volume_24h_change_24h: number;
-  market_cap: number;
-  market_cap_change_24h: number;
-  percent_change_15m: number;
-  percent_change_30m: number;
-  percent_change_1h: number;
-  percent_change_6h: number;
-  percent_change_12h: number;
-  percent_change_24h: number;
-  percent_change_7d: number;
-  percent_change_30d: number;
-  percent_change_1y: number;
-  ath_price: number;
-  ath_date: Date;
-  percent_from_price_ath: number;
+  id: string;
+  name: string;
+  symbol: string;
+  rank: number;
+  circulating_supply: number;
   total_supply: number;
   max_supply: number;
+  beta_value: number;
+  first_data_at: string;
+  last_updated: string;
   quotes: {
     USD: {
       ath_date: string;
@@ -176,18 +170,18 @@ function Coin(){
       const loading = infoLoading ||  tickersLoading
       return (
         <Container>
-        <Btn style={{ display: "abso" }}>
-        <Link to={"/"}>GO HOME</Link></Btn>
+        <Btn>
+        <Link to={"/"}>HOME</Link></Btn>
         <Header>
           <Helmet>
-            <title>
+            <ContentTitle>
               {state?.name
                 ? state.name
                 : loading
                 ? "Loading..."
                 : infoData?.name}
               {` $${tickersData?.quotes.USD.price.toFixed(2)}`}
-            </title>
+            </ContentTitle>
           </Helmet>
           <Title>
             {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
@@ -199,27 +193,29 @@ function Coin(){
           <>
             <Overview>
               <OverviewItem>
+              <ContentTitle>
                 <span>Rank:</span>
-                <span>{infoData?.rank}</span>
+              </ContentTitle>
+              <ContentText><span>{infoData?.rank}</span></ContentText>
               </OverviewItem>
               <OverviewItem>
-                <span>Symbol:</span>
-                <span>${infoData?.symbol}</span>
+              <ContentTitle><span>Symbol:</span></ContentTitle>
+              <ContentText><span>${infoData?.symbol}</span></ContentText>
               </OverviewItem>
               <OverviewItem>
-                <span>Price:</span>
-                <span>{tickersData?.quotes.USD.price.toFixed(2)}</span>
+              <ContentTitle><span>Price:</span></ContentTitle>
+              <ContentText><span>{tickersData?.quotes.USD.price.toFixed(2)}</span></ContentText>
               </OverviewItem>
             </Overview>
-            <Description>{infoData?.description}</Description>
+            <Overview><ContentText>{infoData?.description}</ContentText></Overview>
             <Overview>
               <OverviewItem>
-                <span>Total Suply:</span>
-                <span>{tickersData?.total_supply}</span>
+              <ContentTitle><span>Total Suply:</span></ContentTitle>
+                <ContentText><span>{tickersData?.total_supply}</span></ContentText>
               </OverviewItem>
               <OverviewItem>
-                <span>Max Supply:</span>
-                <span>{tickersData?.max_supply}</span>
+              <ContentTitle><span>Max Supply:</span></ContentTitle>
+              <ContentText><span>{tickersData?.max_supply}</span></ContentText>
               </OverviewItem>
             </Overview>
 
@@ -234,8 +230,6 @@ function Coin(){
 
             <Outlet context={{ coinId }} />
 
-            {/* <Link to={`/${coinId}/chart`} >Chart</Link>
-          <Link to={`/${coinId}/price`}>Price</Link> */}
           </>
         )}
       </Container>
